@@ -89,6 +89,8 @@ class CodeCoverageListener implements EventSubscriberInterface
                 $report->process($this->coverage, $this->options['output'][$format]);
             }
         }
+
+        $this->checkMinimumCoveragePercent();
     }
 
     public function beforeExample(ExampleEvent $event): void
@@ -160,5 +162,55 @@ class CodeCoverageListener implements EventSubscriberInterface
     public function setOptions(array $options): void
     {
         $this->options = $options + $this->options;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function checkMinimumCoveragePercent(): void
+    {
+        $report = $this->coverage->getReport();
+
+        $coverageMessage = '%s coverage is too low as specified by minimum configuration: %.2f%% expected, %.2f covered.';
+
+        $lineMinimum = $this->options['minimum']['lines'] ?? false;
+        if ($lineMinimum !== false && (string) $lineMinimum > $report->getLineExecutedPercent()) {
+            throw new \Exception(sprintf(
+                $coverageMessage,
+                'Line',
+                $lineMinimum,
+                $report->getLineExecutedPercent()
+            ));
+        }
+
+        $classMinimum = $this->options['minimum']['classes'] ?? false;
+        if ($classMinimum !== false && (string) $classMinimum > $report->getTestedClassesPercent()) {
+            throw new \Exception(sprintf(
+                $coverageMessage,
+                'Class',
+                $classMinimum,
+                $report->getTestedClassesPercent()
+            ));
+        }
+
+        $methodMinimum = $this->options['minimum']['methods'] ?? false;
+        if ($methodMinimum !== false && (string) $methodMinimum > $report->getTestedMethodsPercent()) {
+            throw new \Exception(sprintf(
+                $coverageMessage,
+                'Methods',
+                $methodMinimum,
+                $report->getTestedMethodsPercent()
+            ));
+        }
+
+        $functionsMinimum = $this->options['minimum']['functions'] ?? false;
+        if ($functionsMinimum !== false && (string) $functionsMinimum > $report->getTestedFunctionsPercent()) {
+            throw new \Exception(sprintf(
+                $coverageMessage,
+                'Functions',
+                $functionsMinimum,
+                $report->getTestedFunctionsPercent()
+            ));
+        }
     }
 }

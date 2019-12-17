@@ -128,6 +128,14 @@ extensions:
     # Blacklist files for which code generation should NOT be done
     #blacklist_files:
       #- lib/bootstrap.php
+    #
+    # Minimum coverage required - will exit with a non-zero code if not met
+    # Default: no minimum
+    #minimum:
+      #lines: 50.00
+      #classes: 50.00
+      #methods: 50.00
+      #functions: 50.00
 ```
 
 ### Options
