@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace FriendsOfPhpSpec\PhpSpec\CodeCoverage\Listener;
 
+use Exception;
 use PhpSpec\Console\ConsoleIO;
 use PhpSpec\Event\ExampleEvent;
 use PhpSpec\Event\SuiteEvent;
@@ -165,17 +166,20 @@ class CodeCoverageListener implements EventSubscriberInterface
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function checkMinimumCoveragePercent(): void
     {
         $report = $this->coverage->getReport();
 
-        $coverageMessage = '%s coverage is too low as specified by minimum configuration: %.2f%% expected, %.2f covered.';
+        $coverageMessage = <<<'COVMSG'
+%s coverage is too low as specified by minimum configuration: %.2f%% expected, %.2f covered.
+COVMSG;
 
         $lineMinimum = $this->options['minimum']['lines'] ?? false;
-        if ($lineMinimum !== false && (string) $lineMinimum > $report->getLineExecutedPercent()) {
-            throw new \Exception(sprintf(
+
+        if (false !== $lineMinimum && (string) $lineMinimum > $report->getLineExecutedPercent()) {
+            throw new Exception(sprintf(
                 $coverageMessage,
                 'Line',
                 $lineMinimum,
@@ -184,8 +188,9 @@ class CodeCoverageListener implements EventSubscriberInterface
         }
 
         $classMinimum = $this->options['minimum']['classes'] ?? false;
-        if ($classMinimum !== false && (string) $classMinimum > $report->getTestedClassesPercent()) {
-            throw new \Exception(sprintf(
+
+        if (false !== $classMinimum && (string) $classMinimum > $report->getTestedClassesPercent()) {
+            throw new Exception(sprintf(
                 $coverageMessage,
                 'Class',
                 $classMinimum,
@@ -194,8 +199,9 @@ class CodeCoverageListener implements EventSubscriberInterface
         }
 
         $methodMinimum = $this->options['minimum']['methods'] ?? false;
-        if ($methodMinimum !== false && (string) $methodMinimum > $report->getTestedMethodsPercent()) {
-            throw new \Exception(sprintf(
+
+        if (false !== $methodMinimum && (string) $methodMinimum > $report->getTestedMethodsPercent()) {
+            throw new Exception(sprintf(
                 $coverageMessage,
                 'Methods',
                 $methodMinimum,
@@ -204,8 +210,9 @@ class CodeCoverageListener implements EventSubscriberInterface
         }
 
         $functionsMinimum = $this->options['minimum']['functions'] ?? false;
-        if ($functionsMinimum !== false && (string) $functionsMinimum > $report->getTestedFunctionsPercent()) {
-            throw new \Exception(sprintf(
+
+        if (false !== $functionsMinimum && (string) $functionsMinimum > $report->getTestedFunctionsPercent()) {
+            throw new Exception(sprintf(
                 $coverageMessage,
                 'Functions',
                 $functionsMinimum,
