@@ -1,6 +1,6 @@
 language: php
 
-matrix:
+jobs:
   include:
     - php: 7.1
     - php: 7.1
@@ -11,28 +11,26 @@ matrix:
     - php: 7.3
     - php: 7.3
       env: deps=low
+    - php: 7.4
+    - php: 7.4
+      env: deps=low
     - php: nightly
       env: deps=low
     - php: nightly
   allow_failures:
     - php: nightly
 
-depth: 1
-
 cache:
   directories:
-    - $HOME/.composer/cache/files
+    - $HOME/.composer/cache
 
-before_script:
-    - if [[ $deps = low ]]; then composer update --prefer-lowest --prefer-stable; fi
+install:
+  - travis_retry composer install --no-interaction
+  - if [[ $deps = low ]]; then travis_retry composer update --prefer-lowest --prefer-stable --no-interaction; fi
 
 script:
   - composer validate
-  - composer update
   - composer grumphp
-
-install:
-    - travis_retry composer install
 
 after_success:
   - phpenv config-rm xdebug.ini
