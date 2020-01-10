@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\FriendsOfPhpSpec\PhpSpec\CodeCoverage\Listener;
 
+use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Listener\CodeCoverageListener;
 use PhpSpec\Console\ConsoleIO;
 use PhpSpec\Event\SuiteEvent;
 use PhpSpec\ObjectBehavior;
@@ -17,6 +18,16 @@ use SebastianBergmann\CodeCoverage\Report;
  */
 class CodeCoverageListenerSpec extends ObjectBehavior
 {
+    public function it_is_initializable()
+    {
+        $this->shouldHaveType(CodeCoverageListener::class);
+    }
+
+    public function let(ConsoleIO $io)
+    {
+        $this->beConstructedWith($io, new CodeCoverage(), []);
+    }
+
     /**
      * Disabled due to tests breaking as php-code-coverage marked their classes
      * final and we cannot mock them. The tests should be converted into proper

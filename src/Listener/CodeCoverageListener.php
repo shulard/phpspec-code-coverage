@@ -26,14 +26,29 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class CodeCoverageListener implements EventSubscriberInterface
 {
+    /**
+     * @var CodeCoverage
+     */
     private $coverage;
 
+    /**
+     * @var ConsoleIO
+     */
     private $io;
 
+    /**
+     * @var array
+     */
     private $options;
 
+    /**
+     * @var array
+     */
     private $reports;
 
+    /**
+     * @var bool
+     */
     private $skipCoverage;
 
     public function __construct(ConsoleIO $io, CodeCoverage $coverage, array $reports, bool $skipCoverage = false)
@@ -65,19 +80,19 @@ class CodeCoverageListener implements EventSubscriberInterface
     public function afterSuite(SuiteEvent $event): void
     {
         if ($this->skipCoverage) {
-            if ($this->io && $this->io->isVerbose()) {
+            if ($this->io->isVerbose()) {
                 $this->io->writeln('Skipping code coverage generation');
             }
 
             return;
         }
 
-        if ($this->io && $this->io->isVerbose()) {
+        if ($this->io->isVerbose()) {
             $this->io->writeln();
         }
 
         foreach ($this->reports as $format => $report) {
-            if ($this->io && $this->io->isVerbose()) {
+            if ($this->io->isVerbose()) {
                 $this->io->writeln(sprintf('Generating code coverage report in %s format ...', $format));
             }
 

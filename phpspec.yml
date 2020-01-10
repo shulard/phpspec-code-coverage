@@ -2,18 +2,15 @@
 # friends-of-phpspec/phpspec-code-coverage
 formatter.name: pretty
 suites:
-    default_suite:
-        namespace: FriendsOfPhpSpec\PhpSpec\CodeCoverage
-        psr4_prefix: FriendsOfPhpSpec\PhpSpec\CodeCoverage
+  default_suite:
+    namespace: FriendsOfPhpSpec\PhpSpec\CodeCoverage
+    psr4_prefix: FriendsOfPhpSpec\PhpSpec\CodeCoverage
 
 extensions:
   FriendsOfPhpSpec\PhpSpec\CodeCoverage\CodeCoverageExtension:
     format:
       - html
       - clover
-      - php
-      - text
     output:
-      html: build/coverage
-      clover: build/coverage.xml
-      php: build/coverage.php
+      html: coverage
+      clover: coverage/clover.xml

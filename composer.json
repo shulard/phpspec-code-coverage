@@ -39,8 +39,12 @@
     ],
     "require": {
         "php": "^7.1",
-        "phpspec/phpspec": "^4.2 || ^5.0 || ^6.0",
-        "phpunit/php-code-coverage": "^5.0 || ^6.0 || ^7.0"
+        "phpspec/phpspec": "^5.0 || ^6.0",
+        "phpunit/php-code-coverage": "^6.0 || ^7.0"
+    },
+    "conflict": {
+        "friendsofphp/php-cs-fixer": "2.16.0",
+        "sebastian/comparator": "<2.0"
     },
     "require-dev": {
         "drupol/php-conventions": "^1",
@@ -66,7 +70,7 @@
     "minimum-stability": "stable",
     "scripts": {
         "grumphp": "./vendor/bin/grumphp run",
-        "scrutinizer": "./vendor/bin/ocular code-coverage:upload --format=php-clover build/coverage.xml"
+        "scrutinizer": "./vendor/bin/ocular code-coverage:upload --format=php-clover coverage/clover.xml"
     },
     "support": {
         "issues": "https://github.com/friends-of-phpspec/phpspec-code-coverage/issues",

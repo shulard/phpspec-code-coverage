@@ -15,7 +15,7 @@ charset = utf-8
 indent_style = space
 indent_size = 4
 
-[*.{yml,yaml}]
+[*.{neon,yml,yaml}]
 indent_style = space
 indent_size = 2
 
