@@ -46,8 +46,7 @@
         "sebastian/comparator": "< 2.0"
     },
     "require-dev": {
-        "drupol/php-conventions": "^1.7.1",
-        "scrutinizer/ocular": "^1"
+        "drupol/php-conventions": "^1.7.1"
     },
     "suggest": {
         "ext-pcov": "Install PCov extension to generate code coverage.",
@@ -68,8 +67,7 @@
     },
     "minimum-stability": "stable",
     "scripts": {
-        "grumphp": "./vendor/bin/grumphp run",
-        "scrutinizer": "./vendor/bin/ocular code-coverage:upload --format=php-clover coverage/clover.xml"
+        "grumphp": "./vendor/bin/grumphp run"
     },
     "support": {
         "issues": "https://github.com/friends-of-phpspec/phpspec-code-coverage/issues",
