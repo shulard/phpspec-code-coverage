@@ -37,12 +37,12 @@ class CodeCoverageListener implements EventSubscriberInterface
     private $io;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private $options;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private $reports;
 
@@ -51,6 +51,14 @@ class CodeCoverageListener implements EventSubscriberInterface
      */
     private $skipCoverage;
 
+    /**
+     * CodeCoverageListener constructor.
+     *
+     * @param ConsoleIO $io
+     * @param CodeCoverage $coverage
+     * @param array<string, mixed> $reports
+     * @param bool $skipCoverage
+     */
     public function __construct(ConsoleIO $io, CodeCoverage $coverage, array $reports, bool $skipCoverage = false)
     {
         $this->io = $io;
@@ -160,7 +168,7 @@ class CodeCoverageListener implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return array<string, array<int, int|string>>
      */
     public static function getSubscribedEvents(): array
     {
@@ -172,6 +180,9 @@ class CodeCoverageListener implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function setOptions(array $options): void
     {
         $this->options = $options + $this->options;
