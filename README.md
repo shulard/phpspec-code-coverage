@@ -1,10 +1,11 @@
-# phpspec-code-coverage
-
 [![Latest Stable Version](https://img.shields.io/packagist/v/friends-of-phpspec/phpspec-code-coverage.svg?style=flat-square)](https://packagist.org/packages/friends-of-phpspec/phpspec-code-coverage)
-[![Total Downloads](https://img.shields.io/packagist/dt/friends-of-phpspec/phpspec-code-coverage.svg?style=flat-square)](https://packagist.org/packages/friends-of-phpspec/phpspec-code-coverage)
-[![Scrutinizer Code
-Quality](https://img.shields.io/scrutinizer/quality/g/friends-of-phpspec/phpspec-code-coverage/master?style=flat-square)](https://scrutinizer-ci.com/g/friends-of-phpspec/phpspec-code-coverage/?branch=master)
-[![Travis](https://img.shields.io/travis/com/friends-of-phpspec/phpspec-code-coverage.svg?style=flat-square)](https://travis-ci.com/friends-of-phpspec/phpspec-code-coverage)
+ [![GitHub stars](https://img.shields.io/github/stars/friends-of-phpspec/phpspec-code-coverage.svg?style=flat-square)](https://packagist.org/packages/friends-of-phpspec/phpspec-code-coverage)
+ [![Total Downloads](https://img.shields.io/packagist/dt/friends-of-phpspec/phpspec-code-coverage.svg?style=flat-square)](https://packagist.org/packages/friends-of-phpspec/phpspec-code-coverage)
+ [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/friends-of-phpspec/phpspec-code-coverage/Continuous%20Integration?style=flat-square)](https://github.com/friends-of-phpspec/phpspec-code-coverage/actions)
+ [![Scrutinizer code quality](https://img.shields.io/scrutinizer/quality/g/friends-of-phpspec/phpspec-code-coverage/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/friends-of-phpspec/phpspec-code-coverage/?branch=master)
+ [![License](https://img.shields.io/packagist/l/friends-of-phpspec/phpspec-code-coverage.svg?style=flat-square)](https://packagist.org/packages/friends-of-phpspec/phpspec-code-coverage)
+ 
+# phpspec-code-coverage
 
 [phpspec-code-coverage][0] is a [PhpSpec][2] extension that generates Code
 Coverage reports for [PhpSpec][2] tests.
