@@ -54,10 +54,7 @@ class CodeCoverageListener implements EventSubscriberInterface
     /**
      * CodeCoverageListener constructor.
      *
-     * @param ConsoleIO $io
-     * @param CodeCoverage $coverage
      * @param array<string, mixed> $reports
-     * @param bool $skipCoverage
      */
     public function __construct(ConsoleIO $io, CodeCoverage $coverage, array $reports, bool $skipCoverage = false)
     {
@@ -139,8 +136,6 @@ class CodeCoverageListener implements EventSubscriberInterface
     /**
      * Note: We use array_map() instead of array_walk() because the latter expects
      * the callback to take the value as the first and the index as the seconds parameter.
-     *
-     * @param SuiteEvent $event
      */
     public function beforeSuite(SuiteEvent $event): void
     {

@@ -37,7 +37,6 @@ use function is_array;
 class CodeCoverageExtension implements Extension
 {
     /**
-     * @param ServiceContainer $container
      * @param array<string, string> $params
      */
     public function load(ServiceContainer $container, array $params = []): void
