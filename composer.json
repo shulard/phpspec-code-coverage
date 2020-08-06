@@ -40,7 +40,7 @@
     "require": {
         "php": ">= 7.1.3",
         "phpspec/phpspec": "^5.0 || ^6.0",
-        "phpunit/php-code-coverage": "^6.0 || ^7.0"
+        "phpunit/php-code-coverage": "^6.0 || ^7.0 || ^8.0"
     },
     "conflict": {
         "sebastian/comparator": "< 2.0"
