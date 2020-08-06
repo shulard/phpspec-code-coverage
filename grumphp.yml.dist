@@ -5,5 +5,3 @@ parameters:
   extra_tasks:
     phpspec:
       verbose: true
-      metadata:
-        priority: 3000
