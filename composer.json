@@ -46,7 +46,7 @@
         "sebastian/comparator": "< 2.0"
     },
     "require-dev": {
-        "drupol/php-conventions": "^1.7.1"
+        "drupol/php-conventions": "^1.7.1 || ^1.8.16"
     },
     "suggest": {
         "ext-pcov": "Install PCov extension to generate code coverage.",
