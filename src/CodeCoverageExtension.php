@@ -91,6 +91,10 @@ class CodeCoverageExtension implements Extension
                 $options['high_lower_bound'] = 70;
             }
 
+            if (!isset($options['show_only_summary'])) {
+                $options['show_only_summary'] = false;
+            }
+
             return $options;
         });
 
@@ -114,8 +118,7 @@ class CodeCoverageExtension implements Extension
                             $options['lower_upper_bound'],
                             $options['high_lower_bound'],
                             $options['show_uncovered_files'],
-                            /* $showOnlySummary */
-                            false
+                            $options['show_only_summary']
                         );
 
                         break;

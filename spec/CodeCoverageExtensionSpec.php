@@ -19,6 +19,31 @@ class CodeCoverageExtensionSpec extends ObjectBehavior
         $this->shouldHaveType(CodeCoverageExtension::class);
     }
 
+    public function it_should_allow_to_set_show_only_summary_option(): void
+    {
+        $container = new IndexedServiceContainer();
+        $container->setParam('code_coverage', ['show_only_summary' => true]);
+        $this->load($container);
+
+        $options = $container->get('code_coverage.options');
+
+        if (true !== $options['show_only_summary']) {
+            throw new Exception('show_only_summary was not set');
+        }
+    }
+
+    public function it_should_not_use_show_only_summary_option_by_default(): void
+    {
+        $container = new IndexedServiceContainer();
+        $this->load($container, []);
+
+        $options = $container->get('code_coverage.options');
+
+        if (false !== $options['show_only_summary']) {
+            throw new Exception('show_only_summary should be `false` by default');
+        }
+    }
+
     public function it_should_transform_format_into_array(): void
     {
         $container = new IndexedServiceContainer();
