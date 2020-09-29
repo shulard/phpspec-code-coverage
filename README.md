@@ -112,6 +112,10 @@ extensions:
     # Whilelist directories for which code generation should be done
     # Default: [src, lib]
     #
+    # Should text output show only summary?
+    # Default: false
+    #show_only_summary: true
+    #
     whitelist:
       - src
       - lib
