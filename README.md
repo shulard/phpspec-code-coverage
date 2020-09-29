@@ -145,6 +145,7 @@ extensions:
 * `output` (optional) sets an output file/directory where specific code
   coverage format will be generated. If you configure multiple formats, takes
   a hash of `format:output` (e.g. `clover:coverage.xml`) (default `coverage`)
+* `show_only_summary` (optional) for showing only summary in text report (default `false`)
 * `show_uncovered_files` (optional) for including uncovered files in coverage
   reports (default `true`)
 * `lower_upper_bound` (optional) sets lower upper bound for code coverage
