@@ -6,6 +6,11 @@ documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.3.3] - 2020-11-16
+
+- Support "phpunit/php-code-coverage" v8 (#27)
+- Switch to GitHub actions (#25)
+
 ## [4.3.2] - 2019-11-12
 
 - Allow compatibility with PHPSpec v6
