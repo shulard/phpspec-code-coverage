@@ -6,6 +6,10 @@ documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.0] - 2020-11-16
+
+- Extension requires PHP7.2+ (due to PhpSpec v7 depending on it) #37, #35
+
 ## [4.3.3] - 2020-11-16
 
 - Support "phpunit/php-code-coverage" v8 (#27)
