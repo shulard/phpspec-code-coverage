@@ -38,9 +38,9 @@
         }
     ],
     "require": {
-        "php": "^7.2 || ^8.0",
-        "phpspec/phpspec": "^5.0 || ^6.0 || ^7.0",
-        "phpunit/php-code-coverage": "^6.0 || ^7.0 || ^8.0"
+        "php": ">= 7.3",
+        "phpspec/phpspec": "^6.0 || ^7.0",
+        "phpunit/php-code-coverage": "^9.0"
     },
     "conflict": {
         "sebastian/comparator": "< 2.0"
@@ -54,7 +54,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.x-dev"
+            "dev-master": "6.x-dev"
         }
     },
     "autoload": {

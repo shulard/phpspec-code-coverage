@@ -20,6 +20,7 @@ use PhpSpec\Extension;
 use PhpSpec\ServiceContainer;
 use RuntimeException;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
+use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\Report;
 use SebastianBergmann\CodeCoverage\Version;
@@ -50,8 +51,11 @@ class CodeCoverageExtension implements Extension
         });
 
         $container->define('code_coverage', static function ($container) {
+            /** @var Filter $filter */
+            $filter = $container->get('code_coverage.filter');
+
             try {
-                $coverage = new CodeCoverage(null, $container->get('code_coverage.filter'));
+                return new CodeCoverage((new Selector())->forLineCoverage($filter), $filter);
             } catch (RuntimeException $error) {
                 throw new NoCoverageDriverAvailableException(
                     'There is no available coverage driver to be used.',
@@ -59,8 +63,6 @@ class CodeCoverageExtension implements Extension
                     $error
                 );
             }
-
-            return $coverage;
         });
 
         $container->define('code_coverage.options', static function ($container) use ($params) {
