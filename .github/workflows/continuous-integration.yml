@@ -14,7 +14,8 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macOS-latest]
-        php-versions: ['7.2', '7.3', '7.4']
+        php-versions: ['7.3', '7.4', '8.0']
+        composer-versions: ['composer:v1', 'composer:v2']
 
     steps:
       - name: Set git to use LF
@@ -31,7 +32,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          extensions: mbstring,xdebug,pcov
+          tools: ${{ matrix.composer-versions }}
+          extensions: mbstring, xdebug, pcov
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -45,16 +47,20 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install dependencies
+        if: ${{ matrix.php-versions != '8.0' }} # Remove this as soon as `drupol/php-conventions` supports PHP 8
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
 
       - name: Run Grumphp
+        if: ${{ matrix.php-versions != '8.0' }} # Remove this as soon as `drupol/php-conventions` supports PHP 8
         run: vendor/bin/grumphp run --no-ansi -n
 
       - name: Send PSALM data
+        if: ${{ matrix.php-versions != '8.0' }} # Remove this as soon as `drupol/php-conventions` supports PHP 8
         run: vendor/bin/psalm --shepherd --stats
         continue-on-error: true
 
       - name: Send Scrutinizer data
+        if: ${{ matrix.php-versions != '8.0' }} # Remove this as soon as `drupol/php-conventions` supports PHP 8
         run: |
           wget https://scrutinizer-ci.com/ocular.phar
           php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml

@@ -146,19 +146,17 @@ class CodeCoverageListener implements EventSubscriberInterface
         $filter = $this->coverage->filter();
 
         foreach ($this->options['whitelist'] as $option) {
-            $filter->addDirectoryToWhitelist($option);
+            $filter->includeDirectory($option);
         }
 
         foreach ($this->options['blacklist'] as $option) {
-            $filter->removeDirectoryFromWhitelist($option);
+            $filter->excludeDirectory($option);
         }
 
-        foreach ($this->options['whitelist_files'] as $option) {
-            $filter->addFilesToWhitelist($option);
-        }
+        $filter->includeFiles($this->options['whitelist_files']);
 
         foreach ($this->options['blacklist_files'] as $option) {
-            $filter->removeFileFromWhitelist($option);
+            $filter->excludeFile($option);
         }
     }
 

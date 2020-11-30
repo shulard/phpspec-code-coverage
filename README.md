@@ -22,6 +22,14 @@ used as a single metric defining how good your tests are.
 - PHP 7+ (for [PhpSpec][2] v4+) or PHP 5.6+ (for [PhpSpec][2] v3)
 - [Xdebug][3], [phpdbg][4] or [pcov][6] extension enabled (PHP 7+ is required for code
   generation to work with [phpdbg][4]).
+  
+## Compatibility
+
+| phpspec-code-coverage | PHP      | phpspec                    | phpunit                    |
+|-----------------------|----------|----------------------------|----------------------------|
+| 4.x                   | `^7.1`   | `^4.2 \|\| ^5.0 \|\| ^6.0` | `^5.0 \|\| ^6.0 \|\| ^7.0` |
+| 5.x                   | `>= 7.2` | `^5.0 \|\| ^6.0 \|\| ^7.0` | `^6.0 \|\| ^7.0 \|\| ^8.0` |
+| 6.x                   | `>= 7.3` | `^6.0 \|\| ^7.0`           | `^9.0`                     |
 
 ## Change Log
 
