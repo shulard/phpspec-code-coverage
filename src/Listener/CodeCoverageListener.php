@@ -21,6 +21,8 @@ use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Report;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+use function is_string;
+
 /**
  * @author Henrik Bjornskov
  */
@@ -146,11 +148,19 @@ class CodeCoverageListener implements EventSubscriberInterface
         $filter = $this->coverage->filter();
 
         foreach ($this->options['whitelist'] as $option) {
-            $filter->includeDirectory($option);
+            if (is_string($option)) {
+                $option = ['directory' => $option];
+            }
+            $option = $option + ['suffix' => '.php', 'prefix' => ''];
+            $filter->includeDirectory($option['directory'], $option['suffix'], $option['prefix']);
         }
 
         foreach ($this->options['blacklist'] as $option) {
-            $filter->excludeDirectory($option);
+            if (is_string($option)) {
+                $option = ['directory' => $option];
+            }
+            $option = $option + ['suffix' => '.php', 'prefix' => ''];
+            $filter->excludeDirectory($option['directory'], $option['suffix'], $option['prefix']);
         }
 
         $filter->includeFiles($this->options['whitelist_files']);
