@@ -14,14 +14,13 @@ declare(strict_types=1);
 
 namespace FriendsOfPhpSpec\PhpSpec\CodeCoverage\Listener;
 
-use InvalidArgumentException;
+use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Exception\ConfigurationException;
 use PhpSpec\Console\ConsoleIO;
 use PhpSpec\Event\ExampleEvent;
 use PhpSpec\Event\SuiteEvent;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Report;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use TypeError;
 
 use function gettype;
 use function is_array;
@@ -203,14 +202,14 @@ class CodeCoverageListener implements EventSubscriberInterface
         }
 
         if (!is_array($option)) {
-            throw new TypeError(sprintf(
+            throw new ConfigurationException(sprintf(
                 'Directory filtering options must be a string or an associated array, %s given instead.',
                 gettype($option)
             ));
         }
 
         if (!isset($option['directory'])) {
-            throw new InvalidArgumentException('Missing required directory path.');
+            throw new ConfigurationException('Missing required directory path.');
         }
 
         return [

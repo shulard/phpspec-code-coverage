@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace spec\FriendsOfPhpSpec\PhpSpec\CodeCoverage\Listener;
 
+use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Exception\ConfigurationException;
 use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Listener\CodeCoverageListener;
-use InvalidArgumentException;
 use PhpSpec\Console\ConsoleIO;
 use PhpSpec\Event\SuiteEvent;
 use PhpSpec\ObjectBehavior;
@@ -14,8 +14,6 @@ use SebastianBergmann\CodeCoverage\Driver\Driver;
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
 use stdClass;
-use Throwable;
-use TypeError;
 
 /**
  * Disabled due to tests breaking as php-code-coverage marked their classes
@@ -40,7 +38,7 @@ class CodeCoverageListenerSpec extends ObjectBehavior
         ]);
 
         $this
-            ->shouldNotThrow(TypeError::class)
+            ->shouldNotThrow(ConfigurationException::class)
             ->during('beforeSuite', [$event]);
     }
 
@@ -58,7 +56,7 @@ class CodeCoverageListenerSpec extends ObjectBehavior
         ]);
 
         $this
-            ->shouldNotThrow(Throwable::class)
+            ->shouldNotThrow(ConfigurationException::class)
             ->during('beforeSuite', [$event]);
     }
 
@@ -71,7 +69,7 @@ class CodeCoverageListenerSpec extends ObjectBehavior
         ]);
 
         $this
-            ->shouldThrow(TypeError::class)
+            ->shouldThrow(ConfigurationException::class)
             ->during('beforeSuite', [$event]);
     }
 
@@ -84,7 +82,7 @@ class CodeCoverageListenerSpec extends ObjectBehavior
         ]);
 
         $this
-            ->shouldThrow(InvalidArgumentException::class)
+            ->shouldThrow(ConfigurationException::class)
             ->during('beforeSuite', [$event]);
     }
 
