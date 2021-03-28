@@ -5,12 +5,17 @@ declare(strict_types=1);
 namespace spec\FriendsOfPhpSpec\PhpSpec\CodeCoverage\Listener;
 
 use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Listener\CodeCoverageListener;
+use InvalidArgumentException;
 use PhpSpec\Console\ConsoleIO;
+use PhpSpec\Event\SuiteEvent;
 use PhpSpec\ObjectBehavior;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
+use stdClass;
+use Throwable;
+use TypeError;
 
 /**
  * Disabled due to tests breaking as php-code-coverage marked their classes
@@ -23,9 +28,64 @@ use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
  */
 class CodeCoverageListenerSpec extends ObjectBehavior
 {
+    public function it_can_process_all_directory_filtering_options(SuiteEvent $event)
+    {
+        $this->setOptions([
+            'blacklist' => [
+                'src',
+                ['directory' => 'src', 'suffix' => 'Spec.php', 'prefix' => 'Get'],
+                ['directory' => 'src', 'suffix' => 'Test.php'],
+                ['directory' => 'src'],
+            ],
+        ]);
+
+        $this
+            ->shouldNotThrow(TypeError::class)
+            ->during('beforeSuite', [$event]);
+    }
+
     public function it_is_initializable()
     {
         $this->shouldHaveType(CodeCoverageListener::class);
+    }
+
+    public function it_will_ignore_unknown_directory_filtering_options(SuiteEvent $event)
+    {
+        $this->setOptions([
+            'whitelist' => [
+                ['directory' => 'test', 'foobar' => 'baz'],
+            ],
+        ]);
+
+        $this
+            ->shouldNotThrow(Throwable::class)
+            ->during('beforeSuite', [$event]);
+    }
+
+    public function it_will_throw_if_the_directory_filter_option_type_is_not_supported(SuiteEvent $event)
+    {
+        $this->setOptions([
+            'whitelist' => [
+                new stdClass(),
+            ],
+        ]);
+
+        $this
+            ->shouldThrow(TypeError::class)
+            ->during('beforeSuite', [$event]);
+    }
+
+    public function it_will_throw_if_the_directory_parameter_is_missing(SuiteEvent $event)
+    {
+        $this->setOptions([
+            'whitelist' => [
+                ['foobar' => 'baz', 'suffix' => 'Spec.php', 'prefix' => 'Get'],
+            ],
+        ]);
+
+        $this
+            ->shouldThrow(InvalidArgumentException::class)
+            ->during('beforeSuite', [$event]);
     }
 
     public function let(ConsoleIO $io)
