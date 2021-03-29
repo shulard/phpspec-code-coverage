@@ -127,6 +127,10 @@ extensions:
     whitelist:
       - src
       - lib
+      # or to apply filtering on files names
+      #- directory: src
+      #  suffix: "Controller.php"
+      #  prefix: "Get"
     #
     # Whiltelist files for which code generation should be done
     # Default: empty
@@ -137,6 +141,10 @@ extensions:
     # Blacklist directories for which code generation should NOT be done
     #blacklist:
       #- src/legacy
+      # or to apply filtering on files names
+      #- directory: src/legacy
+      #  suffix: "Spec.php"
+      #  prefix: "Test"
     #
     # Blacklist files for which code generation should NOT be done
     #blacklist_files:
@@ -161,10 +169,12 @@ extensions:
 * `high_lower_bound` (optional) sets high lower bound for code coverage
   (default `70`)
 * `whitelist` takes an array of directories to whitelist (default: `lib`,
-  `src`).
+  `src`). The array can be made more specific if an associative array is 
+  given with the following keys (`directory`, `prefix`, `suffix`)
 * `whitelist_files` takes an array of files to whitelist (default: none).
 * `blacklist` takes an array of directories to blacklist (default: `test,
-  vendor, spec`)
+  vendor, spec`). The array can be made more specific if an associative 
+  array is given with the following keys (`directory`, `prefix`, `suffix`)
 * `blacklist_files` takes an array of files to blacklist
 
 ## Authors
