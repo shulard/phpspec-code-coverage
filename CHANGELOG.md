@@ -6,6 +6,10 @@ documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [6.1.0] - 2021-03-30
+
+- Added support for directory filtering #44
+
 ## [6.0.0] - 2020-11-28
 
 - Support PHP 8
