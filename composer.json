@@ -34,7 +34,7 @@
         },
         {
             "name": "Jay Linski",
-            "homepage": "https://twitter.com/jay_linski"
+            "homepage": "https://github.com/jaylinski"
         }
     ],
     "require": {
@@ -46,7 +46,8 @@
         "sebastian/comparator": "< 2.0"
     },
     "require-dev": {
-        "drupol/php-conventions": "^1.7.1 || ^1.8.16"
+        "drupol/php-conventions": "^3.0",
+        "vimeo/psalm": "^4.7"
     },
     "suggest": {
         "ext-pcov": "Install PCov extension to generate code coverage.",

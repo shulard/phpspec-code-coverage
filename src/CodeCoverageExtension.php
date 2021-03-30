@@ -16,6 +16,7 @@ namespace FriendsOfPhpSpec\PhpSpec\CodeCoverage;
 
 use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Exception\NoCoverageDriverAvailableException;
 use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Listener\CodeCoverageListener;
+use PhpSpec\Console\ConsoleIO;
 use PhpSpec\Extension;
 use PhpSpec\ServiceContainer;
 use RuntimeException;
@@ -24,6 +25,7 @@ use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\Report;
 use SebastianBergmann\CodeCoverage\Version;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
 use function count;
@@ -50,7 +52,7 @@ class CodeCoverageExtension implements Extension
             return new Filter();
         });
 
-        $container->define('code_coverage', static function ($container) {
+        $container->define('code_coverage', static function (ServiceContainer $container) {
             /** @var Filter $filter */
             $filter = $container->get('code_coverage.filter');
 
@@ -65,7 +67,7 @@ class CodeCoverageExtension implements Extension
             }
         });
 
-        $container->define('code_coverage.options', static function ($container) use ($params) {
+        $container->define('code_coverage.options', static function (ServiceContainer $container) use ($params) {
             $options = !empty($params) ? $params : $container->getParam('code_coverage');
 
             if (!isset($options['format'])) {
@@ -100,7 +102,8 @@ class CodeCoverageExtension implements Extension
             return $options;
         });
 
-        $container->define('code_coverage.reports', static function ($container) {
+        $container->define('code_coverage.reports', static function (ServiceContainer $container) {
+            /** @var array<string, mixed> $options */
             $options = $container->get('code_coverage.options');
 
             $reports = [];
@@ -144,20 +147,26 @@ class CodeCoverageExtension implements Extension
             return $reports;
         });
 
-        $container->define('event_dispatcher.listeners.code_coverage', static function ($container) {
+        $container->define('event_dispatcher.listeners.code_coverage', static function (ServiceContainer $container) {
             $skipCoverage = false;
+
+            /** @var InputInterface $input */
             $input = $container->get('console.input');
 
             if ($input->hasOption('no-coverage') && $input->getOption('no-coverage')) {
                 $skipCoverage = true;
             }
 
-            $listener = new CodeCoverageListener(
-                $container->get('console.io'),
-                $container->get('code_coverage'),
-                $container->get('code_coverage.reports'),
-                $skipCoverage
-            );
+            /** @var ConsoleIO $consoleIO */
+            $consoleIO = $container->get('console.io');
+
+            /** @var CodeCoverage $codeCoverage */
+            $codeCoverage = $container->get('code_coverage');
+
+            /** @var array<string, object> $codeCoverageReports */
+            $codeCoverageReports = $container->get('code_coverage.reports');
+
+            $listener = new CodeCoverageListener($consoleIO, $codeCoverage, $codeCoverageReports, $skipCoverage);
             $listener->setOptions($container->getParam('code_coverage', []));
 
             return $listener;
