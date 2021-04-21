@@ -29,7 +29,7 @@ final class CoversAnnotationUtil
      */
     public function getLinesToBeCovered(string $className, string $methodName)
     {
-        $annotations = self::parseTestMethodAnnotations(
+        $annotations = $this->parseTestMethodAnnotations(
             $className,
             $methodName
         );
