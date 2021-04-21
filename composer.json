@@ -46,7 +46,6 @@
         "sebastian/comparator": "< 2.0"
     },
     "require-dev": {
-        "ext-json": "*",
         "drupol/php-conventions": "^3.0",
         "vimeo/psalm": "^4.7",
         "sebastian/code-unit": "^1.0.8"
