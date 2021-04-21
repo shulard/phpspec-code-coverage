@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace FriendsOfPhpSpec\PhpSpec\CodeCoverage\Listener;
 
+use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Annotation\Registry;
+use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Annotation\CoversAnnotationUtil;
 use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Exception\ConfigurationException;
 use PhpSpec\Console\ConsoleIO;
 use PhpSpec\Event\ExampleEvent;
@@ -57,6 +59,11 @@ class CodeCoverageListener implements EventSubscriberInterface
     private $skipCoverage;
 
     /**
+     * @var CoversAnnotationUtil
+     */
+    private $coversUtil;
+
+    /**
      * CodeCoverageListener constructor.
      *
      * @param array<string, mixed> $reports
@@ -76,6 +83,7 @@ class CodeCoverageListener implements EventSubscriberInterface
         ];
 
         $this->skipCoverage = $skipCoverage;
+        $this->coversUtil = new CoversAnnotationUtil(new Registry());
     }
 
     public function afterExample(ExampleEvent $event): void
@@ -84,7 +92,25 @@ class CodeCoverageListener implements EventSubscriberInterface
             return;
         }
 
-        $this->coverage->stop();
+        if (!class_exists('SebastianBergmann\CodeUnit\InterfaceUnit')) {
+            $this->coverage->stop();
+            return;
+        }
+
+        $testFunctionName = $event->getExample()->getFunctionReflection()->getName();
+        $testClassName = $event->getSpecification()->getClassReflection()->getName();
+
+        $linesToBeCovered = $this->coversUtil->getLinesToBeCovered(
+            $testClassName,
+            $testFunctionName
+        );
+
+        $linesToBeUsed = $this->coversUtil->getLinesToBeUsed(
+            $testClassName,
+            $testFunctionName
+        );
+
+        $this->coverage->stop(true, $linesToBeCovered, $linesToBeUsed);
     }
 
     public function afterSuite(SuiteEvent $event): void
