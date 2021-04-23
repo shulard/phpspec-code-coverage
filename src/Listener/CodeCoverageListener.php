@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace FriendsOfPhpSpec\PhpSpec\CodeCoverage\Listener;
 
+use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Annotation\CoversAnnotationUtil;
 use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Exception\ConfigurationException;
 use PhpSpec\Console\ConsoleIO;
 use PhpSpec\Event\ExampleEvent;
@@ -37,6 +38,11 @@ class CodeCoverageListener implements EventSubscriberInterface
     private $coverage;
 
     /**
+     * @var CoversAnnotationUtil|null
+     */
+    private $coversUtil;
+
+    /**
      * @var ConsoleIO
      */
     private $io;
@@ -57,12 +63,15 @@ class CodeCoverageListener implements EventSubscriberInterface
     private $skipCoverage;
 
     /**
-     * CodeCoverageListener constructor.
-     *
      * @param array<string, mixed> $reports
      */
-    public function __construct(ConsoleIO $io, CodeCoverage $coverage, array $reports, bool $skipCoverage = false)
-    {
+    public function __construct(
+        ConsoleIO $io,
+        CodeCoverage $coverage,
+        ?CoversAnnotationUtil $coversAnnotationUtil,
+        array $reports,
+        bool $skipCoverage = false
+    ) {
         $this->io = $io;
         $this->coverage = $coverage;
         $this->reports = $reports;
@@ -76,6 +85,7 @@ class CodeCoverageListener implements EventSubscriberInterface
         ];
 
         $this->skipCoverage = $skipCoverage;
+        $this->coversUtil = $coversAnnotationUtil;
     }
 
     public function afterExample(ExampleEvent $event): void
@@ -84,7 +94,26 @@ class CodeCoverageListener implements EventSubscriberInterface
             return;
         }
 
-        $this->coverage->stop();
+        if (null === $this->coversUtil) {
+            $this->coverage->stop();
+
+            return;
+        }
+
+        $testFunctionName = $event->getExample()->getFunctionReflection()->getName();
+        $testClassName = $event->getSpecification()->getClassReflection()->getName();
+
+        $linesToBeCovered = $this->coversUtil->getLinesToBeCovered(
+            $testClassName,
+            $testFunctionName
+        );
+
+        $linesToBeUsed = $this->coversUtil->getLinesToBeUsed(
+            $testClassName,
+            $testFunctionName
+        );
+
+        $this->coverage->stop(true, $linesToBeCovered, $linesToBeUsed);
     }
 
     public function afterSuite(SuiteEvent $event): void
