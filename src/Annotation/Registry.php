@@ -10,12 +10,14 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace FriendsOfPhpSpec\PhpSpec\CodeCoverage\Annotation;
 
-use function array_key_exists;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
+
+use function array_key_exists;
 
 /**
  * Reflection information, and therefore DocBlock information, is static within
@@ -36,8 +38,8 @@ final class Registry
     private $methodDocBlocks = [];
 
     /**
-     * @param string $class
-     * @return DocBlock
+     * @param class-string $class
+     *
      * @throws ReflectionException
      */
     public function forClassName(string $class): DocBlock
@@ -52,9 +54,8 @@ final class Registry
     }
 
     /**
-     * @param string $classInHierarchy
-     * @param string $method
-     * @return DocBlock
+     * @param class-string $classInHierarchy
+     *
      * @throws ReflectionException
      */
     public function forMethod(string $classInHierarchy, string $method): DocBlock

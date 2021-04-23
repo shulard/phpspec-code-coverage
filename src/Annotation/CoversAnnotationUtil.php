@@ -6,9 +6,12 @@ namespace FriendsOfPhpSpec\PhpSpec\CodeCoverage\Annotation;
 
 use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Exception\CodeCoverageException;
 use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Exception\InvalidCoversTargetException;
+use ReflectionException;
 use SebastianBergmann\CodeUnit\CodeUnitCollection;
 use SebastianBergmann\CodeUnit\InvalidCodeUnitException;
 use SebastianBergmann\CodeUnit\Mapper;
+
+use function count;
 
 final class CoversAnnotationUtil
 {
@@ -23,9 +26,13 @@ final class CoversAnnotationUtil
     }
 
     /**
-     * @throws CodeCoverageException
+     * @param class-string $className
      *
-     * @return array|bool
+     * @throws CodeCoverageException
+     * @throws InvalidCoversTargetException
+     * @throws ReflectionException
+     *
+     * @return array<string, array>|false
      */
     public function getLinesToBeCovered(string $className, string $methodName)
     {
@@ -42,24 +49,39 @@ final class CoversAnnotationUtil
     }
 
     /**
-     * Returns lines of code specified with the @uses annotation.
+     * Returns lines of code specified with the.
+     *
+     * @param class-string $className .
      *
      * @throws CodeCoverageException
+     * @throws InvalidCoversTargetException
+     * @throws ReflectionException
+     *
+     * @return array<string, array>
+     *
+     * @uses annotation.
      */
     public function getLinesToBeUsed(string $className, string $methodName): array
     {
         return $this->getLinesToBeCoveredOrUsed($className, $methodName, 'uses');
     }
 
+    /**
+     * @param class-string $className
+     *
+     * @throws ReflectionException
+     *
+     * @return array<string, mixed>
+     */
     public function parseTestMethodAnnotations(string $className, ?string $methodName = ''): array
     {
-        if ($methodName !== null) {
+        if (null !== $methodName) {
             try {
                 return [
                     'method' => $this->registry->forMethod($className, $methodName)->symbolAnnotations(),
-                    'class'  => $this->registry->forClassName($className)->symbolAnnotations(),
+                    'class' => $this->registry->forClassName($className)->symbolAnnotations(),
                 ];
-            } catch (\ReflectionException $methodNotFound) {
+            } catch (ReflectionException $methodNotFound) {
                 // ignored
             }
         }
@@ -71,11 +93,13 @@ final class CoversAnnotationUtil
     }
 
     /**
-     * @param string $className
-     * @param string $methodName
-     * @param string $mode
-     * @return array
+     * @param class-string $className
+     *
      * @throws CodeCoverageException
+     * @throws InvalidCoversTargetException
+     * @throws ReflectionException
+     *
+     * @return array<string, array>
      */
     private function getLinesToBeCoveredOrUsed(string $className, string $methodName, string $mode): array
     {
@@ -118,7 +142,7 @@ final class CoversAnnotationUtil
             $element = explode(' ', $element);
             $element = $element[0];
 
-            if ($mode === 'covers' && interface_exists($element)) {
+            if ('covers' === $mode && interface_exists($element)) {
                 throw new InvalidCoversTargetException(
                     sprintf(
                         'Trying to @cover interface "%s".',
@@ -145,6 +169,9 @@ final class CoversAnnotationUtil
         return $mapper->codeUnitsToSourceLines($codeUnits);
     }
 
+    /**
+     * @param array<string, array<string, mixed>> $annotations
+     */
     private function shouldCoversAnnotationBeUsed(array $annotations): bool
     {
         if (isset($annotations['method']['coversNothing'])) {

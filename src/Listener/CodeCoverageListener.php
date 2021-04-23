@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace FriendsOfPhpSpec\PhpSpec\CodeCoverage\Listener;
 
-use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Annotation\Registry;
 use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Annotation\CoversAnnotationUtil;
 use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Exception\ConfigurationException;
 use PhpSpec\Console\ConsoleIO;
@@ -39,6 +38,11 @@ class CodeCoverageListener implements EventSubscriberInterface
     private $coverage;
 
     /**
+     * @var CoversAnnotationUtil|null
+     */
+    private $coversUtil;
+
+    /**
      * @var ConsoleIO
      */
     private $io;
@@ -59,17 +63,15 @@ class CodeCoverageListener implements EventSubscriberInterface
     private $skipCoverage;
 
     /**
-     * @var CoversAnnotationUtil
-     */
-    private $coversUtil;
-
-    /**
-     * CodeCoverageListener constructor.
-     *
      * @param array<string, mixed> $reports
      */
-    public function __construct(ConsoleIO $io, CodeCoverage $coverage, array $reports, bool $skipCoverage = false)
-    {
+    public function __construct(
+        ConsoleIO $io,
+        CodeCoverage $coverage,
+        ?CoversAnnotationUtil $coversAnnotationUtil,
+        array $reports,
+        bool $skipCoverage = false
+    ) {
         $this->io = $io;
         $this->coverage = $coverage;
         $this->reports = $reports;
@@ -83,7 +85,7 @@ class CodeCoverageListener implements EventSubscriberInterface
         ];
 
         $this->skipCoverage = $skipCoverage;
-        $this->coversUtil = new CoversAnnotationUtil(new Registry());
+        $this->coversUtil = $coversAnnotationUtil;
     }
 
     public function afterExample(ExampleEvent $event): void
@@ -92,8 +94,9 @@ class CodeCoverageListener implements EventSubscriberInterface
             return;
         }
 
-        if (!class_exists('SebastianBergmann\CodeUnit\InterfaceUnit')) {
+        if (null === $this->coversUtil) {
             $this->coverage->stop();
+
             return;
         }
 

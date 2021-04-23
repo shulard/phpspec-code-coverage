@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace FriendsOfPhpSpec\PhpSpec\CodeCoverage;
 
+use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Annotation\CoversAnnotationUtil;
+use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Annotation\Registry;
 use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Exception\NoCoverageDriverAvailableException;
 use FriendsOfPhpSpec\PhpSpec\CodeCoverage\Listener\CodeCoverageListener;
 use PhpSpec\Console\ConsoleIO;
@@ -166,7 +168,20 @@ class CodeCoverageExtension implements Extension
             /** @var array<string, object> $codeCoverageReports */
             $codeCoverageReports = $container->get('code_coverage.reports');
 
-            $listener = new CodeCoverageListener($consoleIO, $codeCoverage, $codeCoverageReports, $skipCoverage);
+            $coversAnnotationUtil = null;
+
+            if (class_exists('SebastianBergmann\CodeUnit\InterfaceUnit')) {
+                $coversAnnotationUtil = new CoversAnnotationUtil(new Registry());
+            }
+
+            $listener = new CodeCoverageListener(
+                $consoleIO,
+                $codeCoverage,
+                $coversAnnotationUtil,
+                $codeCoverageReports,
+                $skipCoverage
+            );
+
             $listener->setOptions($container->getParam('code_coverage', []));
 
             return $listener;

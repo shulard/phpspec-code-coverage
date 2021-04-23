@@ -90,7 +90,7 @@ class CodeCoverageListenerSpec extends ObjectBehavior
     {
         $codeCoverage = new CodeCoverage(new DriverStub(), new Filter());
 
-        $this->beConstructedWith($io, $codeCoverage, []);
+        $this->beConstructedWith($io, $codeCoverage, null, []);
     }
 }
 

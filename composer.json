@@ -47,13 +47,13 @@
     },
     "require-dev": {
         "drupol/php-conventions": "^3.0",
-        "vimeo/psalm": "^4.7",
-        "sebastian/code-unit": "^1.0.8"
+        "sebastian/code-unit": "^1.0.8",
+        "vimeo/psalm": "^4.7"
     },
     "suggest": {
         "ext-pcov": "Install PCov extension to generate code coverage.",
         "ext-xdebug": "Install Xdebug to generate phpspec code coverage.",
-        "sebastian/code-unit":  "Install code-unit to support @covers annotations in tests."
+        "sebastian/code-unit": "Install code-unit to support @covers annotations in tests."
     },
     "extra": {
         "branch-alias": {
