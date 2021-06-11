@@ -139,6 +139,10 @@ class CodeCoverageExtension implements Extension
                         $reports['html'] = new Report\Html\Facade();
 
                         break;
+                    case 'cobertura':
+                        $reports['cobertura'] = new Report\Cobertura();
+
+                        break;
                 }
             }
 
