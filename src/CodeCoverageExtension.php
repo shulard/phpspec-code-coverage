@@ -147,6 +147,7 @@ class CodeCoverageExtension implements Extension
             return $reports;
         });
 
+        // This is a change to test our CI pipelines
         $container->define('event_dispatcher.listeners.code_coverage', static function (ServiceContainer $container) {
             $skipCoverage = false;
 
